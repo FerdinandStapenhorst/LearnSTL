@@ -1,7 +1,7 @@
 /*
 Author: F.Stapenhorst
 Using STL algorithms with STL containers efficiently
-Pleasae try to use STL algorythms to solve those tasks
+Pleasae try to use STL algorythms to solve the below exercises
 */
 
 #include <string>
@@ -46,7 +46,6 @@ struct Exercise
 };
 
 #pragma endregion
-
 
 void Exercise1()
 {
@@ -201,7 +200,8 @@ public:
 		return (Name == other.Name);
 	}
 
-	friend std::ostream& operator<<(std::ostream& os, const Product& dt);
+private:
+	friend std::ostream& operator<<(std::ostream& os, const Product& product);
 	std::string Name;
 	int Price = 0;
 	bool FreeDelivery = false;
