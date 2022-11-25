@@ -180,9 +180,20 @@ void Exercise9()
 
 	//PrintVector(v);
 }
-// +++++++++++++++++++  Advanced  +++++++++++++++++++
 
 void Exercise10()
+{
+	//Change the elements in the vector v to reverse order
+	Exercise t("Exercise 10");
+	std::vector<int> v = { 1,2,3,4,5,6,7,8,9 };
+	//Implementation here
+
+	PrintVector(v);
+}
+
+// +++++++++++++++++++  Advanced Exercises +++++++++++++++++++
+
+void Exercise11()
 {
 	//Please see this list v of elements in a vector: { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" }
 	//The list has a size of 16 elements. Four of these elements are consecutively selected - marked with the #-character.
@@ -196,7 +207,7 @@ void Exercise10()
 	//The loop below prepares the list of elements and sets the variable 'newBeginOfRange' to each value 15, 3 and 0.
 	//Please implement your solution in the body of the loop below.
 
-	Exercise t("Exercise 10");
+	Exercise t("Exercise 11");
 	std::vector<std::string> v = { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
 	int const sizeOfRange = 4;  //The number of consecutive selected items in the range (the # elements)
 	int const beginOfRange = 9; //The starting point of the original range
@@ -220,7 +231,7 @@ void Exercise10()
 	}
 }
 
-void Exercise11()
+void Exercise12()
 {
 	// See this vector: std::vector<int> v1 = {2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22};
 	//
@@ -246,13 +257,13 @@ void Exercise11()
 	// 13 <-		20
 	// 15 <-		12
 	// 22			22
-	Exercise t("Exercise 9");
+	Exercise t("Exercise 12");
 	std::vector<int> v1 = { 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
 
 	PrintVector(v1);
 }
 
-#pragma region Exercise12
+#pragma region Exercise13
 
 class Product
 {
@@ -284,10 +295,10 @@ std::ostream& operator<<(std::ostream& os, const Product& product)
 	return os;
 }
 
-void Exercise12()
+void Exercise13()
 {
 	//See sub tasks below
-	Exercise t("Exercise 12");
+	Exercise t("Exercise 13");
 	//The list of existing products
 	std::vector<Product> products;
 	products.emplace_back(Product{ "P1", 10, true });
@@ -310,6 +321,7 @@ void Exercise12()
 	std::vector<Product> FreeUnder20;
 	int const MaxPrice = 20;
 
+
 	PrintVector(FreeUnder20);
 }
 
@@ -327,6 +339,7 @@ int main()
 	Exercise8();
 	Exercise9();
 	Exercise10();
-	//Exercise11();
-	//Exercise12();
+	Exercise11();
+	Exercise12();
+	Exercise13();
 }
