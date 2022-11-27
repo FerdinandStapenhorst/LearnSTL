@@ -217,12 +217,11 @@ void Exercise11()
 	PrintVector(v);
 
 	std::vector<int> newBeginOfRangeList{ 15, 3, 0 }; //three new starting points of the range
-	for (auto& i : newBeginOfRangeList)
+	for (auto& newBeginOfRange : newBeginOfRangeList)
 	{
 		//Re-init the vector
 		v = { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
-		Print("Starting at " + std::to_string(i) + ":\t");
-		int newBeginOfRange{ i };
+		Print("Starting at " + std::to_string(newBeginOfRange) + ":\t");
 
 		//Implement here
 
@@ -316,7 +315,7 @@ void Exercise13()
 
 	PrintVector(products);
 
-	//Tast 10c: Find all products that are free shipping and cost less than 20$ and put them in the vector FreeUnder20
+	//Tast 10c: Find all products that are free shipping and cost less than 20$ and copy them to the vector FreeUnder20
 	std::vector<Product> FreeUnder20;
 	int const MaxPrice{ 20 };
 
