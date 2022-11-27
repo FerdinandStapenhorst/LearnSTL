@@ -26,6 +26,7 @@ Pleasae try to use STL algorythms to solve the below exercises
 #include <thread>
 #include <variant>
 #include <cstdint>
+#include <cstdio>
 #include <bit>
 #include <compare>
 #include <coroutine>
@@ -39,14 +40,27 @@ Pleasae try to use STL algorythms to solve the below exercises
 
 #pragma region HelperStuff
 
+template<typename... Args>
+void PrintF(const std::string_view fmt_str, Args&&... args) {
+	auto fmt_args{ std::make_format_args(args...) };
+	std::string outstr{ std::vformat(fmt_str, fmt_args) };
+	fputs(outstr.c_str(), stdout);
+}
+
 template<class T>
 void Print(T item) noexcept
 {
-	std::cout << item; // << std::endl;
-	if (std::is_integral<T>::value)
+	if (std::is_integral_v<T>)
 	{
+		if (std::is_same_v<T, bool> || std::is_same_v<T, const bool>)
+			std::cout << std::boolalpha;
+		std::cout << item;
 		std::cout << ' ';
+		std::cout << std::noboolalpha;
+		return;
 	}
+
+	std::cout << item;
 }
 
 template<class T>
@@ -60,7 +74,7 @@ struct Exercise
 {
 	Exercise(std::string name) : Name{ name }
 	{
-		std::cout << "" << Name << "" << std::endl << "-----------" << std::endl << std::endl;
+		std::cout << "" << Name << "" << std::endl << std::endl;
 	}
 	virtual ~Exercise()
 	{
@@ -190,8 +204,6 @@ void Exercise10()
 
 	PrintVector(v);
 }
-
-//+++++++++++++++++++  Advanced Exercises +++++++++++++++++++
 
 void Exercise11()
 {
@@ -324,6 +336,77 @@ void Exercise13()
 
 #pragma endregion
 
+void Exercise14()
+{
+	//Assuming int x = -1 and unsigned y = 1: write code of the comparison between both
+	Exercise t("Exercise 14");
+	int x{ -1 };
+	unsigned y{ 1 };
+	bool b{ false };
+
+	//implement here, like:
+	// b = comparison of x and y;
+
+	//Compare equal
+
+	Print(b);
+
+	//Compare not-equal
+
+	Print(b);
+
+	//compare  x is less than y
+
+	Print(b);
+
+	//compare x is less or equal to y
+
+	Print(b);
+
+	//compare x is greater than y
+
+	Print(b);
+
+	//compare x is greater or equal than y
+
+	Print(b);
+}
+
+void Exercise15()
+{
+	//See the following struct. It represents a Fraction type that stores the denominator and divider.
+	//Implement the operator overloads so that the comparisons below print correctly (uncomment them to verify your code.
+	//Try to implement as less operator overloads as possible.
+
+	Exercise t("Exercise 15");
+	struct Frac {
+		 Frac(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
+
+		//Implement comparison operators here
+
+
+
+		long Denominator;
+		long Divisor;
+	};
+
+	Frac a{ 10, 15 };
+	Frac b{ 2, 3 };
+	Frac c{ 5, 3 };
+
+	//Un-comment the following block to chek your results
+	/*
+	PrintF("a < c  should be true and is: {}\n", (a < c));
+	PrintF("c > a  should be true and is: {}\n", (c > a));
+	PrintF("a == b should be true and is: {}\n", (a == b));
+	PrintF("a != b should be false and is: {}\n", (a != b));
+	PrintF("a <= b should be true and is: {}\n", (a <= b));
+	PrintF("a <= c should be true and is: {}\n", (a <= c));
+	PrintF("c >= a should be true and is: {}\n", (c >= a));
+	PrintF("a != c should be true and is: {}\n", (a != c));
+	*/
+}
+
 int main()
 {
 	Exercise1();
@@ -339,4 +422,6 @@ int main()
 	Exercise11();
 	Exercise12();
 	Exercise13();
+	Exercise14();
+	Exercise15();
 }
