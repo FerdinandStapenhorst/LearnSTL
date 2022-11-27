@@ -1,9 +1,9 @@
 /*
-Author: F.Stapenhorst
+Author: Ferdinand Stapenhorst 2022
+// https://github.com/FerdinandStapenhorst/LearnSTL
 Using STL algorithms with STL containers efficiently
 Pleasae try to use STL algorythms to solve the below exercises
 */
-
 
 #include <numeric>
 #include <compare>
@@ -76,8 +76,8 @@ void Exercise1()
 {
 	// Copy all element from v1 to the end of v2
 	Exercise t("Exercise 1");
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8 };
-	std::vector<int> v2 = { 10,11,12,13,14,15,16,17,18,19 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8 };
+	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 	//Implementation here
 
@@ -89,8 +89,8 @@ void Exercise2()
 	// Copy all elements from v1 that are greater than 5 to the end of v2
 	Exercise t("Exercise 2");
 
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
-	std::vector<int> v2 = { 10,11,12,13,14,15,16,17,18,19 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 	//Implementation here
 
@@ -102,8 +102,8 @@ void Exercise3()
 	// Move all elements from v1 to the end of v2
 	Exercise t("Exercise 3");
 
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
-	std::vector<int> v2 = { 10,11,12,13,14,15,16,17,18,19 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 	//Implementation here
 
@@ -116,8 +116,8 @@ void Exercise4()
 	// Copy all element from v1 in reverse order to the end of v2
 	Exercise t("Exercise 4");
 
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
-	std::vector<int> v2 = { 10,11,12,13,14,15,16,17,18,19 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 	//Implementation here
 
@@ -131,7 +131,7 @@ void Exercise5()
 	//             so that{ 1,2,3,4,5,6,7,8,9 } will become{ 1,2,3,1,2,3,4,5,9 }
 
 	Exercise t("Exercise 5");
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
 
@@ -142,7 +142,7 @@ void Exercise6()
 {
 	// Increment each number in v1 by 1 so that v1 becomes { 2,3,4,5,6,7,8,9,10 }
 	Exercise t("Exercise 6");
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
 
@@ -153,7 +153,7 @@ void Exercise7()
 {
 	// Count how many elements in the v1 are even numbers
 	Exercise t("Exercise 7");
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
 }
@@ -162,8 +162,8 @@ void Exercise8()
 {
 	//Calculate the items of v1 that are not in v2 and put those items into a new vector v3
 	Exercise t("Exercise 8");
-	std::vector<int> v1 = { 1,2,3,4,5,6,7,8,9 };
-	std::vector<int> v2 = { 4,5,6,7,8,9,10,11,12 };
+	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v2{ 4,5,6,7,8,9,10,11,12 };
 
 	//Implementation here
 	std::vector<int> v3;
@@ -185,13 +185,13 @@ void Exercise10()
 {
 	//Change the elements in the vector v to reverse order
 	Exercise t("Exercise 10");
-	std::vector<int> v = { 1,2,3,4,5,6,7,8,9 };
+	std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
 	//Implementation here
 
 	PrintVector(v);
 }
 
-// +++++++++++++++++++  Advanced Exercises +++++++++++++++++++
+//+++++++++++++++++++  Advanced Exercises +++++++++++++++++++
 
 void Exercise11()
 {
@@ -208,24 +208,23 @@ void Exercise11()
 	//Please implement your solution in the body of the loop below.
 
 	Exercise t("Exercise 11");
-	std::vector<std::string> v = { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
-	int const sizeOfRange = 4;  //The number of consecutive selected items in the range (the # elements)
-	int const beginOfRange = 9; //The starting point of the original range
-	int const endOfRange = beginOfRange + sizeOfRange - 1; //The end of the range
+	std::vector<std::string> v{ "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
+	int const sizeOfRange{ 4 };  //The number of consecutive selected items in the range (the # elements)
+	int const beginOfRange{ 9 }; //The starting point of the original range
+	int const endOfRange{ beginOfRange + sizeOfRange - 1 }; //The end of the range
 
 	Print("Original " + std::to_string(beginOfRange) + ":\t");
 	PrintVector(v);
 
-	std::vector<int> newBeginOfRangeList = { 15, 3, 0 }; //three new starting points of the range
+	std::vector<int> newBeginOfRangeList{ 15, 3, 0 }; //three new starting points of the range
 	for (auto& i : newBeginOfRangeList)
 	{
 		//Re-init the vector
 		v = { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
-		Print("Starting at " + std::to_string(i) + ":\t");	
-		int newBeginOfRange = i;
+		Print("Starting at " + std::to_string(i) + ":\t");
+		int newBeginOfRange{ i };
 
 		//Implement here
-
 
 		PrintVector(v);
 	}
@@ -233,7 +232,7 @@ void Exercise11()
 
 void Exercise12()
 {
-	// See this vector: std::vector<int> v1 = {2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22};
+	// See this vector: std::vector<int> v1 {2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22};
 	//
 	// Reorder the elemnts in v1 so that all uneven elements in the range from 1 through 8
 	// are moved to the end of that range, and all uneven elements in the range from 9 to the end
@@ -258,7 +257,7 @@ void Exercise12()
 	// 15 <-		12
 	// 22			22
 	Exercise t("Exercise 12");
-	std::vector<int> v1 = { 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
+	std::vector<int> v1{ 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
 
 	PrintVector(v1);
 }
@@ -285,8 +284,8 @@ public:
 private:
 	friend std::ostream& operator<<(std::ostream& os, const Product& product);
 	std::string Name;
-	int Price = 0;
-	bool FreeDelivery = false;
+	int Price{ 0 };
+	bool FreeDelivery{ false };
 };
 
 std::ostream& operator<<(std::ostream& os, const Product& product)
@@ -319,8 +318,7 @@ void Exercise13()
 
 	//Tast 10c: Find all products that are free shipping and cost less than 20$ and put them in the vector FreeUnder20
 	std::vector<Product> FreeUnder20;
-	int const MaxPrice = 20;
-
+	int const MaxPrice{ 20 };
 
 	PrintVector(FreeUnder20);
 }
