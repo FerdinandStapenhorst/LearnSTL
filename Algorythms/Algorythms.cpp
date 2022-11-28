@@ -40,6 +40,10 @@ Pleasae try to use STL algorythms to solve the below exercises
 
 #pragma region HelperStuff
 
+//Regular type concept
+template<class T>
+concept Is_RegularType = std::regular<T> && std::totally_ordered<T>;
+
 template<typename... Args>
 void PrintF(const std::string_view fmt_str, Args&&... args) {
 	auto fmt_args{ std::make_format_args(args...) };
@@ -47,7 +51,7 @@ void PrintF(const std::string_view fmt_str, Args&&... args) {
 	fputs(outstr.c_str(), stdout);
 }
 
-template<class T>
+template<typename T>
 void Print(T item) noexcept
 {
 	if (std::is_integral_v<T>)
@@ -63,7 +67,7 @@ void Print(T item) noexcept
 	std::cout << item;
 }
 
-template<class T>
+template<typename T>
 void PrintVector(std::vector<T> v)
 {
 	for_each(std::begin(v), std::end(v), Print<T>);
@@ -275,16 +279,19 @@ void Exercise12()
 
 #pragma region Exercise13
 
+//regular type Product
 class Product
 {
 public:
 	Product() noexcept = default;
+	Product(const Product& other) noexcept 
+		: Name{ other.Name }, Price { other.Price }, FreeDelivery { other.FreeDelivery }{}
 	Product(std::string const name, int const price, bool const freeDelivery) noexcept
 		: Name{ name }, Price{ price }, FreeDelivery{ freeDelivery } {}
 
-	[[nodiscard]] bool operator<(const Product& other) const noexcept
+	[[nodiscard]] auto operator<=>(const Product& other) const noexcept
 	{
-		return (Name < other.Name);
+		return (Name <=> other.Name);
 	}
 
 	[[nodiscard]] bool operator==(const Product& other) const noexcept
@@ -294,7 +301,7 @@ public:
 
 private:
 	friend std::ostream& operator<<(std::ostream& os, const Product& product);
-	std::string Name;
+	std::string Name{};
 	int Price{ 0 };
 	bool FreeDelivery{ false };
 };
@@ -309,6 +316,8 @@ void Exercise13()
 {
 	//See sub tasks below
 	ExerciseStart t{ "Exercise 13" };
+	static_assert(Is_RegularType<Product>);
+
 	//The list of existing products
 	std::vector<Product> products;
 	products.emplace_back(Product{ "P1", 10, true });
