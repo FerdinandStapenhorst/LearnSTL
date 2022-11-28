@@ -89,7 +89,7 @@ struct ExerciseStart
 void Exercise1()
 {
 	// Copy all element from v1 to the end of v2
-	ExerciseStart t{"Exercise 1"};
+	ExerciseStart t{ "Exercise 1" };
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8 };
 	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
@@ -101,7 +101,7 @@ void Exercise1()
 void Exercise2()
 {
 	// Copy all elements from v1 that are greater than 5 to the end of v2
-	ExerciseStart t{"Exercise 2"};
+	ExerciseStart t{ "Exercise 2" };
 
 	std::vector<int> v1{ 3,1,2,6,7,8,5,7,9 };
 	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
@@ -114,7 +114,7 @@ void Exercise2()
 void Exercise3()
 {
 	// Move all elements from v1 to the end of v2
-	ExerciseStart t{"Exercise 3"};
+	ExerciseStart t{ "Exercise 3" };
 
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
@@ -128,7 +128,7 @@ void Exercise3()
 void Exercise4()
 {
 	// Copy all element from v1 in reverse order to the end of v2
-	ExerciseStart t{"Exercise 4"};
+	ExerciseStart t{ "Exercise 4" };
 
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 	std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
@@ -144,7 +144,7 @@ void Exercise5()
 	// Copy the first 5 elements of v1 to the position after position 3 of the same vector v1,
 	//             so that{ 1,2,3,4,5,6,7,8,9 } will become{ 1,2,3,1,2,3,4,5,9 }
 
-	ExerciseStart t{"Exercise 5"};
+	ExerciseStart t{ "Exercise 5" };
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
@@ -155,7 +155,7 @@ void Exercise5()
 void Exercise6()
 {
 	// Increment each number in v1 by 1 so that v1 becomes { 2,3,4,5,6,7,8,9,10 }
-	ExerciseStart t{"Exercise 6"};
+	ExerciseStart t{ "Exercise 6" };
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
@@ -166,7 +166,7 @@ void Exercise6()
 void Exercise7()
 {
 	// Count how many elements in the v1 are even numbers
-	ExerciseStart t{"Exercise 7"};
+	ExerciseStart t{ "Exercise 7" };
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
 	//Implementation here
@@ -175,7 +175,7 @@ void Exercise7()
 void Exercise8()
 {
 	//Calculate the items of v1 that are not in v2 and put those items into a new vector v3
-	ExerciseStart t{"Exercise 8"};
+	ExerciseStart t{ "Exercise 8" };
 	std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 	std::vector<int> v2{ 4,5,6,7,8,9,10,11,12 };
 
@@ -188,7 +188,7 @@ void Exercise8()
 void Exercise9()
 {
 	//Create a vector of ints containing the numbers from 10 to 100
-	ExerciseStart t{"Exercise 9"};
+	ExerciseStart t{ "Exercise 9" };
 
 	//Implementation here
 
@@ -198,7 +198,7 @@ void Exercise9()
 void Exercise10()
 {
 	//Change the elements in the vector v to reverse order
-	ExerciseStart t{"Exercise 10"};
+	ExerciseStart t{ "Exercise 10" };
 	std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
 	//Implementation here
 
@@ -219,7 +219,7 @@ void Exercise11()
 	//The loop below prepares the list of elements and sets the variable 'newBeginOfRange' to each value 15, 3 and 0.
 	//Please implement your solution in the body of the loop below.
 
-	ExerciseStart t{"Exercise 11"};
+	ExerciseStart t{ "Exercise 11" };
 	std::vector<std::string> v{ "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
 	int const sizeOfRange{ 4 };  //The number of consecutive selected items in the range (the # elements)
 	int const beginOfRange{ 9 }; //The starting point of the original range
@@ -267,7 +267,7 @@ void Exercise12()
 	// 13 <-		20
 	// 15 <-		12
 	// 22			22
-	ExerciseStart t{"Exercise 12"};
+	ExerciseStart t{ "Exercise 12" };
 	std::vector<int> v1{ 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
 
 	PrintVector(v1);
@@ -308,7 +308,7 @@ std::ostream& operator<<(std::ostream& os, const Product& product)
 void Exercise13()
 {
 	//See sub tasks below
-	ExerciseStart t{"Exercise 13"};
+	ExerciseStart t{ "Exercise 13" };
 	//The list of existing products
 	std::vector<Product> products;
 	products.emplace_back(Product{ "P1", 10, true });
@@ -339,7 +339,7 @@ void Exercise13()
 void Exercise14()
 {
 	//Assuming int x = -1 and unsigned y = 1: write code of the comparison between both
-	ExerciseStart t{"Exercise 14"};
+	ExerciseStart t{ "Exercise 14" };
 	int x{ -1 };
 	unsigned y{ 1 };
 	bool b{ false };
@@ -378,14 +378,12 @@ void Exercise15()
 	//Implement the operator overloads so that the comparisons below prints correctly (uncomment to verify your code).
 	//Try to implement as less operator overloads as possible.
 
-	ExerciseStart t{"Exercise 15"};
+	ExerciseStart t{ "Exercise 15" };
 
 	struct Frac {
-		 Frac(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
+		Frac(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
 
 		//Implement comparison operators here
-
-
 
 		long Denominator;
 		long Divisor;
