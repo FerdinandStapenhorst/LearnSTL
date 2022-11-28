@@ -5,53 +5,23 @@ Using STL algorithms with STL containers efficiently
 Pleasae try to use STL algorythms to solve the below exercises
 */
 
-#include <numeric>
-#include <compare>
-#include <utility>
-#include <string>
-#include <iostream>
-#include <vector>
-#include <cassert>
-#include <memory>
-#include <algorithm>
-#include <type_traits>
-#include <ranges>
-#include <iterator>
-#include <filesystem>
-#include <functional>
-#include <thread>
-#include <mutex>
-#include <chrono>
-#include <concepts>
-#include <thread>
-#include <variant>
-#include <cstdint>
-#include <cstdio>
-#include <bit>
-#include <compare>
-#include <coroutine>
-#include <format>
-#include <numbers>
-#include <source_location>
-#include <span>
-#include <syncstream>
-#include <version>
-#include <typeinfo>
+#include "pch.h"
+
 
 #pragma region HelperStuff
 
 //Regular type concept
 template<class T>
-concept Is_RegularType = std::regular<T> && std::totally_ordered<T>;
+concept RegularType = std::regular<T> && std::totally_ordered<T>;
 
-template<typename... Args>
+template<RegularType... Args>
 void PrintF(const std::string_view fmt_str, Args&&... args) {
 	auto fmt_args{ std::make_format_args(args...) };
 	std::string outstr{ std::vformat(fmt_str, fmt_args) };
 	fputs(outstr.c_str(), stdout);
 }
 
-template<typename T>
+template<RegularType T>
 void Print(T item) noexcept
 {
 	if (std::is_integral_v<T>)
@@ -67,7 +37,7 @@ void Print(T item) noexcept
 	std::cout << item;
 }
 
-template<typename T>
+template<RegularType T>
 void PrintVector(std::vector<T> v)
 {
 	for_each(std::begin(v), std::end(v), Print<T>);
@@ -316,7 +286,6 @@ void Exercise13()
 {
 	//See sub tasks below
 	ExerciseStart t{ "Exercise 13" };
-	static_assert(Is_RegularType<Product>);
 
 	//The list of existing products
 	std::vector<Product> products;

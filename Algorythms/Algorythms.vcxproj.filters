@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Algorythms.cpp" />
+    <ClCompile Include="pch.cpp">
+      <Filter>Precompilation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Precompilation">
+      <UniqueIdentifier>{f8c22830-6b0c-499b-a540-5d04cc652881}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Precompilation</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
