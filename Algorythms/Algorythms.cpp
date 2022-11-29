@@ -78,6 +78,7 @@ void PrintItem(T item) noexcept
 	else
 	{
 		std::cout << item;
+		std::cout << ' ';
 	}
 }
 
@@ -329,6 +330,27 @@ namespace ContainerAlgorithm {
 
 		Print(FreeUnder20);
 	}
+
+	void Exercise14()
+	{
+		//Remove all uneven numbers in the vector v so that the size of the vector shrinks accordingly
+		ExerciseStart t{ "ContainerAlgorithm:Exercise 14" };
+		std::vector<int> v{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14 };
+
+		Print(v);
+	}
+
+	void Exercise15()
+	{
+		//Add the new element into the vector while keeping the vector ordered.
+		ExerciseStart t{ "ContainerAlgorithm:Exercise 15" };
+		using Vstr = std::vector<std::string>;
+		Vstr v{ "A","B","D","F","H" };
+		std::string newItem{ "E" };
+
+		Print(v);
+		assert(std::ranges::is_sorted(v));
+	}
 }
 
 namespace Misc {
@@ -448,6 +470,8 @@ int main()
 		Exercise11();
 		Exercise12();
 		Exercise13();
+		Exercise14();
+		Exercise15();
 	}
 
 	{  //Misc stuff
