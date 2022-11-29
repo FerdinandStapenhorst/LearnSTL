@@ -61,7 +61,7 @@ template <typename T>
 concept IsBool = std::common_with<T, bool>;
 
 template<typename T>
-concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std::is_same_v<T, Product>;
+concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std::is_same_v<std::remove_cv_t<T>, Product>;
 
 //Print single item
 template<PrintableItem T>
