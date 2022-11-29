@@ -9,6 +9,40 @@ Pleasae try to use STL algorythms to solve the below exercises
 
 #pragma region HelperStuff
 
+//Product type.
+class Product
+{
+public:
+	Product() noexcept = default;
+	Product(const Product& other) noexcept
+		: Name{ other.Name }, Price{ other.Price }, FreeDelivery{ other.FreeDelivery } {}
+	Product(std::string const name, int const price, bool const freeDelivery) noexcept
+		: Name{ name }, Price{ price }, FreeDelivery{ freeDelivery } {}
+
+	[[nodiscard]] auto operator<=>(const Product& other) const noexcept
+	{
+		return (Name <=> other.Name);
+	}
+
+	[[nodiscard]] bool operator==(const Product& other) const noexcept
+	{
+		return (Name == other.Name);
+	}
+
+private:
+	friend std::ostream& operator<<(std::ostream& os, const Product& product);
+	std::string Name{};
+	int Price{ 0 };
+	bool FreeDelivery{ false };
+};
+
+//Print function for product
+std::ostream& operator<<(std::ostream& os, const Product& product)
+{
+	os << "Name:" << product.Name << '\t' << " Price:" << product.Price << '\t' << "Shipping:" << (product.FreeDelivery ? "free" : "not free") << std::endl;
+	return os;
+}
+
 //Regular type concept
 template<class T>
 concept RegularType = std::regular<T> && std::totally_ordered<T>;
@@ -20,35 +54,49 @@ void PrintF(const std::string_view fmt_str, Args&&... args) {
 	fputs(outstr.c_str(), stdout);
 }
 
+template <typename T>
+concept IsNumeric = std::integral<T> || std::floating_point<T>;
+
+template <typename T>
+concept IsBool = std::common_with<T, bool>;
+
 template<typename T>
-void Print(T item) noexcept
+concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std::is_same_v<T, Product>;
+
+//Print single item
+template<PrintableItem T>
+void PrintItem(T item) noexcept
 {
-	if constexpr (std::is_integral_v<T>)
+	if constexpr (IsNumeric<T>)
 	{
-		if (std::is_same_v<T, bool> || std::is_same_v<T, const bool>)
+		if constexpr (IsBool<T>)
 			std::cout << std::boolalpha;
 		std::cout << item;
 		std::cout << ' ';
 		std::cout << std::noboolalpha;
-		return;
 	}
-
-	std::cout << item;
+	else
+	{
+		std::cout << item;
+	}
 }
 
+//Printing vectors
 template<typename T>
-void PrintVector(std::vector<T> v)
+void Print(std::vector<T> v)
 {
-	for_each(std::begin(v), std::end(v), Print<T>);
+	for_each(std::cbegin(v), std::cend(v), PrintItem<T>);
 	std::cout << std::endl;
 }
 
+//printing views
 template<typename ValueType>
-void PrintView(auto item)
+void Print(auto item)
 {
-	std::for_each(std::begin(item), std::end(item), Print<ValueType>);
+	std::for_each(std::cbegin(item), std::cend(item), PrintItem<ValueType>);
 	std::cout << std::endl;
 }
+
 struct ExerciseStart
 {
 	ExerciseStart(std::string name) : Name{ name }
@@ -74,8 +122,7 @@ namespace ContainerAlgorithm {
 		std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 		//Implementation here
-
-		PrintVector(v2);
+		Print(v2);
 	}
 
 	void Exercise2()
@@ -88,7 +135,7 @@ namespace ContainerAlgorithm {
 
 		//Implementation here
 
-		PrintVector(v2);
+		Print(v2);
 	}
 
 	void Exercise3()
@@ -101,8 +148,8 @@ namespace ContainerAlgorithm {
 
 		//Implementation here
 
-		PrintVector(v1);
-		PrintVector(v2);
+		Print(v1);
+		Print(v2);
 	}
 
 	void Exercise4()
@@ -115,8 +162,8 @@ namespace ContainerAlgorithm {
 
 		//Implementation here
 
-		PrintVector(v1);
-		PrintVector(v2);
+		Print(v1);
+		Print(v2);
 	}
 
 	void Exercise5()
@@ -129,7 +176,7 @@ namespace ContainerAlgorithm {
 
 		//Implementation here
 
-		PrintVector(v1);
+		Print(v1);
 	}
 
 	void Exercise6()
@@ -140,7 +187,7 @@ namespace ContainerAlgorithm {
 
 		//Implementation here
 
-		PrintVector(v1);
+		Print(v1);
 	}
 
 	void Exercise7()
@@ -162,17 +209,17 @@ namespace ContainerAlgorithm {
 		//Implementation here
 		std::vector<int> v3;
 
-		PrintVector(v3);
+		Print(v3);
 	}
 
 	void Exercise9()
 	{
-		//Create a vector of ints containing the numbers from 10 to 100
+		//Create a vector<int> v containing the numbers from 10 to 100
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 9" };
 
 		//Implementation here
 
-		//PrintVector(v);
+		//Print(v);
 	}
 
 	void Exercise10()
@@ -182,7 +229,7 @@ namespace ContainerAlgorithm {
 		std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
 		//Implementation here
 
-		PrintVector(v);
+		Print(v);
 	}
 
 	void Exercise11()
@@ -205,19 +252,19 @@ namespace ContainerAlgorithm {
 		int const beginOfRange{ 9 }; //The starting point of the original range
 		int const endOfRange{ beginOfRange + sizeOfRange - 1 }; //The end of the range
 
-		Print("Original " + std::to_string(beginOfRange) + ":\t");
-		PrintVector(v);
+		PrintItem("Original " + std::to_string(beginOfRange) + ":\t");
+		Print(v);
 
 		std::vector<int> newBeginOfRangeList{ 15, 3, 0 }; //three new starting points of the range
 		for (auto& newBeginOfRange : newBeginOfRangeList)
 		{
 			//Re-init the vector
 			v = { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" };
-			Print("Starting at " + std::to_string(newBeginOfRange) + ":\t");
+			PrintItem("Starting at " + std::to_string(newBeginOfRange) + ":\t");
 
 			//Implement here
 
-			PrintVector(v);
+			Print(v);
 		}
 	}
 
@@ -250,40 +297,7 @@ namespace ContainerAlgorithm {
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 12" };
 		std::vector<int> v1{ 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
 
-		PrintVector(v1);
-	}
-
-	//regular type Product
-	class Product
-	{
-	public:
-		Product() noexcept = default;
-		Product(const Product& other) noexcept
-			: Name{ other.Name }, Price{ other.Price }, FreeDelivery{ other.FreeDelivery } {}
-		Product(std::string const name, int const price, bool const freeDelivery) noexcept
-			: Name{ name }, Price{ price }, FreeDelivery{ freeDelivery } {}
-
-		[[nodiscard]] auto operator<=>(const Product& other) const noexcept
-		{
-			return (Name <=> other.Name);
-		}
-
-		[[nodiscard]] bool operator==(const Product& other) const noexcept
-		{
-			return (Name == other.Name);
-		}
-
-	private:
-		friend std::ostream& operator<<(std::ostream& os, const Product& product);
-		std::string Name{};
-		int Price{ 0 };
-		bool FreeDelivery{ false };
-	};
-
-	std::ostream& operator<<(std::ostream& os, const Product& product)
-	{
-		os << "Name:" << product.Name << '\t' << " Price:" << product.Price << '\t' << "Shipping:" << (product.FreeDelivery ? "free" : "not free") << std::endl;
-		return os;
+		Print(v1);
 	}
 
 	void Exercise13()
@@ -303,17 +317,17 @@ namespace ContainerAlgorithm {
 
 		//Exercise 10a: Sort the product list by price
 
-		PrintVector(products);
+		Print(products);
 
 		//Exercise 10b: Put all elements that are free shipping at the top of the list without breaking the ordering by price
 
-		PrintVector(products);
+		Print(products);
 
 		//Tast 10c: Find all products that are free shipping and cost less than 20$ and copy them to the vector FreeUnder20
 		std::vector<Product> FreeUnder20;
 		int const MaxPrice{ 20 };
 
-		PrintVector(FreeUnder20);
+		Print(FreeUnder20);
 	}
 }
 
@@ -329,29 +343,29 @@ namespace Misc {
 		//implement here, like:
 		// b = comparison of x and y;
 
-		//Compare equal
+		////Compare equal
 
-		Print(b);
+		PrintItem(b);
 
-		//Compare not-equal
+		////Compare not-equal
 
-		Print(b);
+		PrintItem(b);
 
-		//compare  x is less than y
+		////compare  x is less than y
 
-		Print(b);
+		PrintItem(b);
 
-		//compare x is less or equal to y
+		////compare x is less or equal to y
 
-		Print(b);
+		PrintItem(b);
 
-		//compare x is greater than y
+		////compare x is greater than y
 
-		Print(b);
+		PrintItem(b);
 
-		//compare x is greater or equal than y
+		////compare x is greater or equal than y
 
-		Print(b);
+		PrintItem(b);
 	}
 
 	void Exercise2()
@@ -403,17 +417,17 @@ namespace STLRanges
 
 		std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
 
-		//1): create a view of the reverse order of the first 5 elements of v
+		//1): create a view of the first 5 elements of v in reverse order.
 
-		//PrintView<int>(view1);
+		//Print<int>(view1);
 
-		//2): create a view that filters out all uneven numbers ou of vt
+		//2): create a view that filters out all uneven numbers out of v.
 
-		//PrintView<int>(view2);
+		//Print<int>(view2);
 
-		//3): create a view that calculates the square of all even numbers in v
+		//3): create a view that calculates the square of all even numbers in v.
 
-		//PrintView<int>(view3);
+		//Print<int>(view3);
 	}
 }
 
