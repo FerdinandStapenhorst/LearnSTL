@@ -14,12 +14,13 @@ template<typename T>
 concept Printable = requires(std::ostream & os, T & p)
 {
 	os << p;		//nee an << operator
+	{os << p} -> std::same_as<std::ostream&>; //Return of operator << must be an std::ostream
 	p.Print(os);	//need a print methor
 };
 
 //Our enhanced Regular Type concept
 template<class T>
-concept RegularType = std::regular<T> && std::totally_ordered<T>;
+concept RegularType = std::regular<T> and std::totally_ordered<T>;
 
 //Product type.
 class Product
@@ -75,16 +76,9 @@ std::ostream& operator<<(std::ostream& os, const Product& product)
 	return os;
 }
 
-template<typename... Args>
-void PrintF(const std::string_view fmt_str, Args&&... args) {
-	auto fmt_args{ std::make_format_args(args...) };
-	std::string outstr{ std::vformat(fmt_str, fmt_args) };
-	fputs(outstr.c_str(), stdout);
-}
-
 //Concept for numerics
 template <typename T>
-concept IsNumeric = std::integral<T> || std::floating_point<T>;
+concept IsNumeric = std::integral<T> or std::floating_point<T>;
 
 //Bool concept
 template <typename T>
@@ -92,7 +86,7 @@ concept IsBool = std::common_with<T, bool>;
 
 //Combinde PrintableItem concept
 template<typename T>
-concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std::is_same_v<std::remove_cv_t<T>, Product>;
+concept PrintableItem = IsNumeric<T> or std::common_with<T, std::string> or std::is_same_v<std::remove_cv_t<T>, Product>;
 
 //Print single item
 template<PrintableItem T>
