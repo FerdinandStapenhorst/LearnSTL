@@ -5,9 +5,21 @@ Using STL algorithms with STL containers efficiently
 Pleasae try to use STL algorythms to solve the below exercises
 */
 
-#include "pch.h"
+#include "pch.h" //used for precompiled headers
 
 #pragma region HelperStuff
+
+//Printable concept
+template<typename T>
+concept Printable = requires(std::ostream & os, T & p)
+{
+	os << p;		//nee an << operator
+	p.Print(os);	//need a print methor
+};
+
+//Our enhanced Regular Type concept
+template<class T>
+concept RegularType = std::regular<T> && std::totally_ordered<T>;
 
 //Product type.
 class Product
@@ -15,37 +27,53 @@ class Product
 public:
 	Product() noexcept = default;
 	Product(const Product& other) noexcept
-		: Name{ other.Name }, Price{ other.Price }, FreeDelivery{ other.FreeDelivery } {}
+		: _Name{ other._Name }, _Price{ other._Price }, _FreeDelivery{ other._FreeDelivery } {}
 	Product(std::string const name, int const price, bool const freeDelivery) noexcept
-		: Name{ name }, Price{ price }, FreeDelivery{ freeDelivery } {}
+		: _Name{ name }, _Price{ price }, _FreeDelivery{ freeDelivery } {}
 
 	[[nodiscard]] auto operator<=>(const Product& other) const noexcept
 	{
-		return (Name <=> other.Name);
+		return (_Name <=> other._Name);
 	}
 
-	[[nodiscard]] bool operator==(const Product& other) const noexcept
+	[[nodiscard]] bool operator==(Product const& other) const noexcept
 	{
-		return (Name == other.Name);
+		return (_Name == other._Name);
+	}
+
+	void Print(std::ostream& os) const
+	{
+		os << std::format("Name:{}\t Price:{}\t Shipping:{}\n", _Name, _Price, (_FreeDelivery ? "free" : "not free"));
+	}
+
+	std::string Name() const {
+		return _Name;
+	}
+	int Price() const
+	{
+		return _Price;
+	}
+	bool FreeDelivery() const
+	{
+		return _FreeDelivery;
 	}
 
 private:
 	friend std::ostream& operator<<(std::ostream& os, const Product& product);
-	std::string Name{};
-	int Price{ 0 };
-	bool FreeDelivery{ false };
+	std::string _Name{};
+	int _Price{ 0 };
+	bool _FreeDelivery{ false };
 };
 
-//Print function for product
+static_assert(RegularType<Product>); //Make sure Product is a Regular Type
+static_assert(Printable<Product>);    //make sure Product is models the Printable concept
+
+//Print function for a product
 std::ostream& operator<<(std::ostream& os, const Product& product)
 {
-	os << "Name:" << product.Name << '\t' << " Price:" << product.Price << '\t' << "Shipping:" << (product.FreeDelivery ? "free" : "not free") << std::endl;
+	product.Print(os);
 	return os;
 }
-
-//Regular type concept
-template<class T>
-concept RegularType = std::regular<T> && std::totally_ordered<T>;
 
 template<typename... Args>
 void PrintF(const std::string_view fmt_str, Args&&... args) {
@@ -54,12 +82,15 @@ void PrintF(const std::string_view fmt_str, Args&&... args) {
 	fputs(outstr.c_str(), stdout);
 }
 
+//Concept for numerics
 template <typename T>
 concept IsNumeric = std::integral<T> || std::floating_point<T>;
 
+//Bool concept
 template <typename T>
 concept IsBool = std::common_with<T, bool>;
 
+//Combinde PrintableItem concept
 template<typename T>
 concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std::is_same_v<std::remove_cv_t<T>, Product>;
 
@@ -67,7 +98,7 @@ concept PrintableItem = IsNumeric<T> || std::common_with<T, std::string> || std:
 template<PrintableItem T>
 void PrintItem(T item) noexcept
 {
-	if constexpr (IsNumeric<T>)
+	if constexpr (IsNumeric<T>) //Numerics and bools are separated by a space
 	{
 		if constexpr (IsBool<T>)
 			std::cout << std::boolalpha;
@@ -77,27 +108,20 @@ void PrintItem(T item) noexcept
 	}
 	else
 	{
+		//Everything else is just sent to cout
 		std::cout << item;
-		std::cout << ' ';
 	}
 }
 
-//Printing vectors
-template<typename T>
-void Print(std::vector<T> v)
+//printing views and all STL containers
+void Print(std::ranges::range auto& item)
 {
-	for_each(std::cbegin(v), std::cend(v), PrintItem<T>);
-	std::cout << std::endl;
-}
-
-//printing views
-template<typename ValueType>
-void Print(auto item)
-{
+	using ValueType = decltype(std::remove_reference_t<decltype(item)>)::value_type;
 	std::for_each(std::cbegin(item), std::cend(item), PrintItem<ValueType>);
 	std::cout << std::endl;
 }
 
+//Used to print the current exercise to cout
 struct ExerciseStart
 {
 	ExerciseStart(std::string name) : Name{ name }
