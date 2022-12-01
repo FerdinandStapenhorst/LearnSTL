@@ -20,7 +20,7 @@ concept Printable = requires(std::ostream & os, T & p)
 
 //Our enhanced Regular Type concept
 template<class T>
-concept RegularType = std::regular<T> and std::totally_ordered<T>;
+concept ExtendedRegularType = std::regular<T> and std::totally_ordered<T>;
 
 //Product type.
 class Product
@@ -66,7 +66,7 @@ private:
 	bool _FreeDelivery{ false };
 };
 
-static_assert(RegularType<Product>); //Make sure Product is a Regular Type
+static_assert(ExtendedRegularType<Product>); //Make sure Product is a Regular Type
 static_assert(Printable<Product>);    //make sure Product is models the Printable concept
 
 //Print function for a product
@@ -470,6 +470,20 @@ namespace STLRanges
 		//Print<int>(view3);
 	}
 }
+
+namespace BinarySearch {
+	//See the template function signature below. Write a binary search in the body of that function which returns an iterator
+	//pointing to the first element in the range [first, last) that satisfies element >= value,
+	//or last if no such element is found. The range[first, last) must be a sorted range.
+
+	template <std::forward_iterator ForwardIterator, typename ValueType>
+	ForwardIterator BinarySearch(ForwardIterator first, const ForwardIterator last, const ValueType& value) {
+	}
+}
+
+#pragma region Sort
+
+#pragma endregion
 
 int main()
 {
