@@ -88,6 +88,14 @@ concept IsBool = std::common_with<T, bool>;
 template<typename T>
 concept PrintableItem = IsNumeric<T> or std::common_with<T, std::string> or std::is_same_v<std::remove_cv_t<T>, Product>;
 
+//Print formatted string
+template<typename... Args>
+void PrintF(const std::string_view fmt_str, Args&&... args) {
+	auto fmt_args{ std::make_format_args(args...) };
+	std::string outstr{ std::vformat(fmt_str, fmt_args) };
+	fputs(outstr.c_str(), stdout);
+}
+
 //Print single item
 template<PrintableItem T>
 void PrintItem(T item) noexcept
@@ -107,11 +115,27 @@ void PrintItem(T item) noexcept
 	}
 }
 
+//Print vertically two vectors
+void PrintTable(std::vector<std::string> v1, std::vector<std::string> v2)
+{
+	for (int i = 0; i < v1.size(); i++)
+	{
+		std::cout << v1.at(i) << "\t" << v2.at(i) << std::endl;
+	}
+}
+
 //printing views and all STL containers
 void Print(std::ranges::range auto& item)
 {
 	using ValueType = decltype(std::remove_reference_t<decltype(item)>)::value_type;
 	std::for_each(std::cbegin(item), std::cend(item), PrintItem<ValueType>);
+	std::cout << std::endl;
+}
+
+//printing views
+void Print(std::ranges::view auto& item)
+{
+	std::for_each(std::begin(item), std::end(item), PrintItem<int>);
 	std::cout << std::endl;
 }
 
@@ -141,6 +165,7 @@ namespace ContainerAlgorithm {
 		std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 		//Implementation here
+
 		Print(v2);
 	}
 
@@ -166,14 +191,15 @@ namespace ContainerAlgorithm {
 		std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 		//Implementation here
-
+		std::move(std::begin(v1), std::end(v1), std::back_inserter(v2));
+		v1.clear();
 		Print(v1);
 		Print(v2);
 	}
 
 	void Exercise4()
 	{
-		// Copy all element from v1 in reverse order to the end of v2
+		// Copy all elements from v1 in reverse order to the end of v2
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 4" };
 
 		std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
@@ -211,7 +237,7 @@ namespace ContainerAlgorithm {
 
 	void Exercise7()
 	{
-		// Count how many elements in the v1 are even numbers
+		// Count how many elements in v1 are even numbers
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 7" };
 		std::vector<int> v1{ 1,2,3,4,5,6,7,8,9 };
 
@@ -253,7 +279,7 @@ namespace ContainerAlgorithm {
 
 	void Exercise11()
 	{
-		//Please see this list v of elements in a vector: { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" }
+		//See this list v of elements in a vector: { "-", "-", "-", "-" ,"-", "-", "-", "-", "#", "#", "#", "#" ,"-", "-", "-", "-" }
 		//The list has a size of 16 elements. Four of these elements are consecutively selected - marked with the #-character.
 		//The exercise is to move these four elements forwards and backwards within the list v as follows:
 		//	- move towards the end to position 15
@@ -289,34 +315,37 @@ namespace ContainerAlgorithm {
 
 	void Exercise12()
 	{
-		// See this vector: std::vector<int> v1 {2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22};
+		// See this vector: std::vector<std::string> v {"-2","#3","#1","-4","#5","-6","#7","-8","-18","-16","-20","#9","#11","-12","#13","#15","-22"};
 		//
-		// Reorder the elemnts in v1 so that all uneven elements in the range from 1 through 8
-		// are moved to the end of that range, and all uneven elements in the range from 9 to the end
+		// Reorder the elemnts in v1 so that all selected elements (the # elements) in the range from 1 through 8
+		// are moved to the end of that range, and all selected elements in the range from 9 to the end
 		// are moved to the top of that range. Keep the relative order of the elemnts preserved.
 		// Before		After
-		// 2			2
-		// 3  <-		4
-		// 1  <-		6
-		// 4			8
-		// 5  <-		3  <-
-		// 6			1  <-
-		// 7  <-		5  <-
-		// 8			7  <-
+		// -2			-2
+		// -3			-4
+		// #1  <-		-6
+		// -4			-8
+		// #5  <-		#3  <-
+		// -6			#1  <-
+		// #7  <-		#5  <-
+		// -8			#7  <-
 		// -----		-----
-		// 18			9  <-
-		// 16			11 <-
-		// 20			13 <-
-		// 9  <-		15 <-
-		// 11 <-		18
-		// 12			16
-		// 13 <-		20
-		// 15 <-		12
-		// 22			22
+		// -18			#9  <-
+		// -16			#11 <-
+		// -20			#13 <-
+		// #9  <-		#15 <-
+		// #11 <-		-18
+		// -12			-16
+		// #13 <-		-20
+		// #15 <-		-12
+		// -22			-22
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 12" };
-		std::vector<int> v1{ 2,3,1,4,5,6,7,8,18,16,20,9,11,12,13,15,22 };
+		std::vector<std::string> shouldBe{ "-2","-4","-6","-8","#3","#1","#5","#7","#9","#11","#13","#15","-18","-16","-20","-12","-22" };
+		std::vector<std::string> v{ "-2","#3","#1","-4","#5","-6","#7","-8","-18","-16","-20","#9","#11","-12","#13","#15","-22" };
 
-		Print(v1);
+		//Implement here
+
+		PrintTable(shouldBe, v);
 	}
 
 	void Exercise13()
@@ -351,7 +380,7 @@ namespace ContainerAlgorithm {
 
 	void Exercise14()
 	{
-		//Remove all uneven numbers in the vector v so that the size of the vector shrinks accordingly
+		//Remove all uneven numbers from the vector v so that the size of the vector shrinks accordingly
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 14" };
 		std::vector<int> v{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14 };
 
@@ -360,14 +389,43 @@ namespace ContainerAlgorithm {
 
 	void Exercise15()
 	{
-		//Add the new element into the vector while keeping the vector ordered.
+		//Add the element newItem into the vector while keeping the vector ordered.
+		//Do not use a static insert position but calculate the position where the new item should be inserted
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 15" };
 		using Vstr = std::vector<std::string>;
-		Vstr v{ "A","B","D","F","H" };
+		Vstr v{ "A","B","C","D","F","G","H" };
 		std::string newItem{ "E" };
 
 		Print(v);
 		assert(std::ranges::is_sorted(v));
+	}
+}
+
+namespace STLRanges
+{
+	namespace views = std::ranges::views;
+
+	void Exercise1()
+	{
+		//Use views to solve the following exercises.
+		//Example: create a view of all elements in v.
+		// auto view1 = v | views::all;
+
+		ExerciseStart t{ "STLViews:Exercise 1" };
+
+		std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
+
+		//1): create a view1 of the first 5 elements of v in reverse order.
+
+		//Print(view1);
+
+		//2): create a view2 that filters out all uneven numbers out of v.
+
+		//Print(view2);
+
+		//3): create a view3 that calculates the square of all even numbers in v.
+
+		//Print(view3);
 	}
 }
 
@@ -381,29 +439,29 @@ namespace Misc {
 		bool b{ false };
 
 		//implement here, like:
-		// b = comparison of x and y;
+		// b = comparison( x , y );
 
-		////Compare equal
-
-		PrintItem(b);
-
-		////Compare not-equal
+		//Compare equal
 
 		PrintItem(b);
 
-		////compare  x is less than y
+		//Compare not-equal
 
 		PrintItem(b);
 
-		////compare x is less or equal to y
+		//compare  x is less than y
 
 		PrintItem(b);
 
-		////compare x is greater than y
+		//compare x is less or equal to y
 
 		PrintItem(b);
 
-		////compare x is greater or equal than y
+		//compare x is greater than y
+
+		PrintItem(b);
+
+		//compare x is greater or equal than y
 
 		PrintItem(b);
 	}
@@ -416,11 +474,13 @@ namespace Misc {
 
 		ExerciseStart t{ "Misc:Exercise 2" };
 
-		struct Frac {
+		class Frac {
+		public:
 			Frac(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
 
 			//Implement comparison operators here
 
+		private:
 			long Denominator;
 			long Divisor;
 		};
@@ -441,49 +501,26 @@ namespace Misc {
 		PrintF("a != c should be true and is: {}\n", (a != c));
 		*/
 	}
-}
 
-namespace STLRanges
-{
-	namespace views = std::ranges::views;
-
-	void Exercise1()
-	{
-		//Use views to solve the following exercises.
-		//Example: create a view of all elements in v.
-		// auto view1 = v | views::all;
-
-		ExerciseStart t{ "STLViews:Exercise 1" };
-
-		std::vector<int> v{ 1,2,3,4,5,6,7,8,9 };
-
-		//1): create a view of the first 5 elements of v in reverse order.
-
-		//Print<int>(view1);
-
-		//2): create a view that filters out all uneven numbers out of v.
-
-		//Print<int>(view2);
-
-		//3): create a view that calculates the square of all even numbers in v.
-
-		//Print<int>(view3);
-	}
-}
-
-namespace BinarySearch {
 	//See the template function signature below. Write a binary search in the body of that function which returns an iterator
 	//pointing to the first element in the range [first, last) that satisfies element >= value,
 	//or last if no such element is found. The range[first, last) must be a sorted range.
 
 	template <std::forward_iterator ForwardIterator, typename ValueType>
 	ForwardIterator BinarySearch(ForwardIterator first, const ForwardIterator last, const ValueType& value) {
+
+
+		return first;
+	}
+
+	void Exercise3()
+	{
+		//Implementg the binary search above
+		std::vector<int> v{ 1,2,3,4,5,6,7,8,9,10 };
+		auto pos = BinarySearch(std::begin(v), std::end(v), 5);
+		
 	}
 }
-
-#pragma region Sort
-
-#pragma endregion
 
 int main()
 {
