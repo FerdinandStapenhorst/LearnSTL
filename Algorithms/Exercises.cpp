@@ -191,7 +191,7 @@ namespace ContainerAlgorithm {
 		std::vector<int> v2{ 10,11,12,13,14,15,16,17,18,19 };
 
 		//Implementation here
-		std::move(std::begin(v1), std::end(v1), std::back_inserter(v2));
+
 		v1.clear();
 		Print(v1);
 		Print(v2);
