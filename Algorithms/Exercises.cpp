@@ -29,19 +29,14 @@ public:
 	Product() noexcept = default;
 	Product(const Product& other) noexcept
 		: _Name{ other._Name }, _Price{ other._Price }, _FreeDelivery{ other._FreeDelivery } {}
-	Product(std::string const name, int const price, bool const freeDelivery) noexcept
+	Product(std::string const name, double const price, bool const freeDelivery) noexcept
 		: _Name{ name }, _Price{ price }, _FreeDelivery{ freeDelivery } {}
 
-	[[nodiscard]] auto operator<=>(const Product& other) const noexcept
-	{
-		return (_Name <=> other._Name);
-	}
+	//These operators are needed for totally_ordering and equality_comparable
+	auto operator<=>(const Product& other) const noexcept = default;
+	bool operator==(Product const& other) const noexcept = default;
 
-	[[nodiscard]] bool operator==(Product const& other) const noexcept
-	{
-		return (_Name == other._Name);
-	}
-
+	//Printing a product
 	void Print(std::ostream& os) const
 	{
 		os << std::format("Name:{}\t Price:{}\t Shipping:{}\n", _Name, _Price, (_FreeDelivery ? "free" : "not free"));
@@ -50,7 +45,7 @@ public:
 	std::string Name() const {
 		return _Name;
 	}
-	int Price() const
+	double Price() const
 	{
 		return _Price;
 	}
@@ -62,7 +57,7 @@ public:
 private:
 	friend std::ostream& operator<<(std::ostream& os, const Product& product);
 	std::string _Name{};
-	int _Price{ 0 };
+	double _Price{ 0 };
 	bool _FreeDelivery{ false };
 };
 
@@ -480,11 +475,13 @@ namespace Misc {
 			Fraction() = default;
 			Fraction(const Fraction& other) noexcept = default;
 			Fraction(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
-				
-			//Implement the comparison operators here
-			
+
+			//Implement the following comparison operators, so that they return the correct values
+			auto operator<=>(const Fraction& rhs) const noexcept = default;
+			bool operator==(const Fraction& rhs) const noexcept = default;
 
 		private:
+
 			long Denominator{ 0 };
 			long Divisor{ 1 };
 		};
@@ -493,21 +490,32 @@ namespace Misc {
 		Fraction b{ 2, 3 };
 		Fraction c{ 5, 3 };
 
-		//Un-comment the following block to chek your results
-		/*
-		PrintF("a < c  should be true and is: {}\n", (a < c));
-		PrintF("c > a  should be true and is: {}\n", (c > a));
-		PrintF("a == b should be true and is: {}\n", (a == b));
-		PrintF("a != b should be false and is: {}\n", (a != b));
-		PrintF("a <= b should be true and is: {}\n", (a <= b));
-		PrintF("a <= c should be true and is: {}\n", (a <= c));
-		PrintF("c >= a should be true and is: {}\n", (c >= a));
-		PrintF("a != c should be true and is: {}\n", (a != c));
-		*/
+		Fraction d{ 1, 3 };
+		Fraction e{ 2, 6 };
 
-		//static_assert(ExtendedRegularType<Fraction>);  //Uncomment to check if the Fraction is an extended Regular Type
+		Fraction f{ 1, 5 };
+		Fraction g{ 2, 10 };
+
+		//Un-comment the following to check your results
+		return;
+
+		PrintF("a < c  should be true and is: {}\n", (a < c)); assert((a < c));
+		PrintF("a > c  should be false and is: {}\n", (a > c)); assert(!(a > c));
+		PrintF("c < a  should be false and is: {}\n", (c < a)); assert(!(c < a));
+		PrintF("a == b should be true and is: {}\n", (a == b)); assert((a == b));
+		PrintF("a != b should be false and is: {}\n", (a != b)); assert(!(a != b));
+		PrintF("a <= b should be true and is: {}\n", (a <= b)); assert((a <= b));
+		PrintF("a <= c should be true and is: {}\n", (a <= c)); assert((a <= c));
+		PrintF("a >= c should be false and is: {}\n", (a >= c)); assert(!(a >= c));
+		PrintF("c >= a should be true and is: {}\n", (c >= a)); assert((c >= a));
+		PrintF("c <= a should be false and is: {}\n", (c <= a)); assert(!(c <= a));
+		PrintF("a != c should be true and is: {}\n", (a != c)); assert((a != c));
+		PrintF("d == e should be true and is: {}\n", (d == e)); assert((d == e));
+		PrintF("f == g should be true and is: {}\n", (f == g)); assert((f == g));
+
+		assert(ExtendedRegularType<Fraction>);  //Uncomment to check if the Fraction is an extended Regular Type
 	}
-	
+
 	//See the template function signature below. Write a binary search in the body of that function which returns an iterator
 	//pointing to the first element in the range [first, last) that satisfies element >= value,
 	//or last if no such element is found. The range[first, last) must be a sorted range.
@@ -519,9 +527,47 @@ namespace Misc {
 
 	void Exercise3()
 	{
+		ExerciseStart t{ "Misc:Exercise 3" };
 		//Implementg the binary search above
 		std::vector<int> v{ 1,2,3,4,5,6,7,8,9,10 };
 		auto pos = BinarySearch(std::begin(v), std::end(v), 5);
+	}
+
+	bool are_almost_equal_floats(float const& f1, float const& f2, float const& precision)
+	{		
+		bool returnVal = false;
+		//Implement here
+
+		return returnVal;
+	}
+
+	float calculate(float start, float const& decrement, int const& count)
+	{
+		for (int i = 0; i < count; ++i)
+			start -= decrement;
+		return start;
+	}
+
+	void Exercise4()
+	{
+		ExerciseStart t{ "Misc:Exercise 4" };
+
+		//The following loop calculates 10000 iterations of different floats which are equal.
+		//Implemenmt the function are_almost_equal_floats (see above) so that the assert at the end of the loop holds.
+		//The precision of the comparison is 1.0e-5f, which means, every comparison with less difference is consodered equal.
+
+		constexpr auto precision = 1.0e-5f;
+		const int numTests = 10000;
+		int equalComparisons = 0;
+		for (auto i = 0; i < numTests; ++i)
+		{
+			auto expected = (i / 10.0f);
+			auto actual = calculate(9.0f + expected, 0.2f, 45);
+			//actual and expected are equal
+			if (are_almost_equal_floats(actual, expected, precision))
+				++equalComparisons;
+		}
+		assert(equalComparisons == numTests);
 	}
 }
 
@@ -550,6 +596,8 @@ int main()
 		using namespace Misc;
 		Exercise1();
 		Exercise2();
+		Exercise3();
+		Exercise4();
 	}
 
 	{
