@@ -533,41 +533,48 @@ namespace Misc {
 		auto pos = BinarySearch(std::begin(v), std::end(v), 5);
 	}
 
-	bool are_almost_equal_floats(float const& f1, float const& f2, float const& precision)
-	{		
-		bool returnVal = false;
+	bool are_almost_equal_doubles(double const& f1, double const& f2, double const& precision)
+	{
 		//Implement here
+		bool returnVal = false;
+
 
 		return returnVal;
 	}
 
-	float calculate(float start, float const& decrement, int const& count)
+	double calculate(double const& start)
 	{
+		constexpr double base = 9.0, decrement = 0.2, count = 45;
+		double ret = base + start;
 		for (int i = 0; i < count; ++i)
-			start -= decrement;
-		return start;
+			ret -= decrement;
+		return ret;
 	}
 
 	void Exercise4()
 	{
 		ExerciseStart t{ "Misc:Exercise 4" };
 
-		//The following loop calculates 10000 iterations of different floats which are equal.
-		//Implemenmt the function are_almost_equal_floats (see above) so that the assert at the end of the loop holds.
-		//The precision of the comparison is 1.0e-5f, which means, every comparison with less difference is consodered equal.
+		//The following loop calculates 100000 iterations of different doubles which are equal.
+		//Implemenmt the function are_almost_equal_doubles (see above) so that the assert within the loop holds.
+		
 
-		constexpr auto precision = 1.0e-5f;
-		const int numTests = 10000;
+		constexpr double precision = 4.0e-15; //The precision of the comparison, which means, 
+											  //every comparison with less difference is considered equal.
+		constexpr double divisor = 10.0;
+		const int numTests = 100000;
 		int equalComparisons = 0;
+
 		for (auto i = 0; i < numTests; ++i)
 		{
-			auto expected = (i / 10.0f);
-			auto actual = calculate(9.0f + expected, 0.2f, 45);
-			//actual and expected are equal
-			if (are_almost_equal_floats(actual, expected, precision))
-				++equalComparisons;
+			double expected = (i / divisor);
+			double actual = calculate(expected);
+			//actual and expected should be equal
+			if (!(are_almost_equal_doubles(actual, expected, precision)))
+			{
+				assert(false, "function returned false but should be true!");
+			}
 		}
-		assert(equalComparisons == numTests);
 	}
 }
 
