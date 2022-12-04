@@ -20,7 +20,7 @@ concept Printable = requires(std::ostream & os, T & p)
 
 //Our enhanced Regular Type concept
 template<class T>
-concept ExtendedRegularType = std::regular<T> and std::totally_ordered<T>;
+concept ExtendedRegularType = std::regular<T> and std::totally_ordered<T>; //Our extended regular type adds totally_ordered to the requirement
 
 //Product type.
 class Product
@@ -66,8 +66,8 @@ private:
 	bool _FreeDelivery{ false };
 };
 
-static_assert(ExtendedRegularType<Product>); //Make sure Product is a Regular Type
-static_assert(Printable<Product>);    //make sure Product is models the Printable concept
+static_assert(ExtendedRegularType<Product>); //Make sure Product is am (extended) Regular Type (about Regular Type see https://abseil.io/blog/20180531-regular-types)
+static_assert(Printable<Product>); //make sure Product is models the Printable concept
 
 //Print function for a product
 std::ostream& operator<<(std::ostream& os, const Product& product)
@@ -469,26 +469,29 @@ namespace Misc {
 
 	void Exercise2()
 	{
-		//See the following struct. It represents a Fraction type that stores the denominator and divider.
+		//See the following class Fraction. It represents a Fraction type that stores the denominator and divider.
 		//Implement the operator overloads so that the comparisons below prints correctly (uncomment to verify your code).
 		//Try to implement as less operator overloads as possible.
 
 		ExerciseStart t{ "Misc:Exercise 2" };
 
-		class Frac {
+		class Fraction {
 		public:
-			Frac(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
-
-			//Implement comparison operators here
+			Fraction() = default;
+			Fraction(const Fraction& other) noexcept = default;
+			Fraction(int denominator, int divisor) : Denominator{ denominator }, Divisor{ divisor } {}
+				
+			//Implement the comparison operators here
+			
 
 		private:
-			long Denominator;
-			long Divisor;
+			long Denominator{ 0 };
+			long Divisor{ 1 };
 		};
 
-		Frac a{ 10, 15 };
-		Frac b{ 2, 3 };
-		Frac c{ 5, 3 };
+		Fraction a{ 10, 15 };
+		Fraction b{ 2, 3 };
+		Fraction c{ 5, 3 };
 
 		//Un-comment the following block to chek your results
 		/*
@@ -501,8 +504,10 @@ namespace Misc {
 		PrintF("c >= a should be true and is: {}\n", (c >= a));
 		PrintF("a != c should be true and is: {}\n", (a != c));
 		*/
-	}
 
+		//static_assert(ExtendedRegularType<Fraction>);  //Uncomment to check if the Fraction is an extended Regular Type
+	}
+	
 	//See the template function signature below. Write a binary search in the body of that function which returns an iterator
 	//pointing to the first element in the range [first, last) that satisfies element >= value,
 	//or last if no such element is found. The range[first, last) must be a sorted range.
