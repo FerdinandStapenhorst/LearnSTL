@@ -543,8 +543,8 @@ namespace Misc {
 
 	double calculate(double const& start)
 	{
-		constexpr double base = 9.0, decrement = 0.2, count = 45;
-		double ret = base + start; //We add 9 and then subtract 45*0.2 which is also 9
+		constexpr double base =18, decrement = 0.2, count = 90;
+		double ret = base + start; //We add 18 and then subtract 90*0.2 which is also 18
 		for (int i = 0; i < count; ++i)
 			ret -= decrement;
 		return ret;
@@ -558,7 +558,7 @@ namespace Misc {
 		//Implemenmt the function are_almost_equal_doubles (see above) so that the assert within the loop holds.
 		
 
-		constexpr double precision = 5.0e-15; //The precision of the comparison, which means, 
+		constexpr double precision = 1.0e-13; //The precision of the comparison, which means, 
 											  //every comparison with less difference is considered equal.
 		constexpr double divisor = 10.0;
 		const int numTests = 100000;
