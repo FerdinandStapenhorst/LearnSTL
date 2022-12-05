@@ -543,6 +543,8 @@ namespace Misc {
 
 	double calculate(double const& start)
 	{
+		// We run 90 subtractions of a double value wich will result in some rounding issues.
+		// That way we can test the are_almost_equal_doubles function 
 		constexpr double base =18, decrement = 0.2, count = 90;
 		double ret = base + start; //We add 18 and then subtract 90*0.2 which is also 18
 		for (int i = 0; i < count; ++i)
@@ -554,20 +556,25 @@ namespace Misc {
 	{
 		ExerciseStart t{ "Misc:Exercise 4" };
 
-		//The following loop calculates 100,000 iterations of different doubles which are equal.
-		//Implemenmt the function are_almost_equal_doubles (see above) so that the assert within the loop holds.
+		// The following loop calculates 100,000 iterations of different doubles which are equal - at least from the human prospective.
+		// The issue with comparing doubles - just like floats - is, that there are rounding issues when doing many calculations which make the 
+		// numbers possibly different at some last digits of the fraction. That's why we need to use some sort of precision value to implement "almost equal".
+		// The precision for doubles we will use is 1.0e-12 - which means if the difference of the doubles are equal or less than
+		// one trillionth, the two doubles are considered equal.
+		// Exercise:
+		// Implemenmt the function are_almost_equal_doubles (see above) so that the assert within the loop below holds.
 		
 
-		constexpr double precision = 1.0e-13; //The precision of the comparison, which means, 
-											  //every comparison with less difference is considered equal.
+		constexpr double precision = 1.0e-12; //The precision of the comparison, which means, 
+											  //every comparison with less or no difference is considered equal.
 		constexpr double divisor = 10.0;
 		const int numTests = 100000;
-
+		
 		for (auto i = 0; i < numTests; ++i)
 		{
 			double expected = (i / divisor);
 			double actual = calculate(expected);
-			//actual and expected should be equal
+			//actual and expected should be equal considering the precision
 			if (!(are_almost_equal_doubles(actual, expected, precision)))
 			{
 				assert(false, "function returned false but should be true!");
