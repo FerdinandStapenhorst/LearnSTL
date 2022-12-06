@@ -394,6 +394,26 @@ namespace ContainerAlgorithm {
 		Print(v);
 		assert(std::ranges::is_sorted(v));
 	}
+
+	void Exercise16()
+	{
+		ExerciseStart t{ "ContainerAlgorithm:Exercise 16" };
+
+		// Check out this programmking challenge: https://www.hackerrank.com/contests/hourrank-31/challenges/hanging-posters/problem
+		// See the solution below and try to find at least one solution that uses STL algorithm(s)
+
+		int h = 6;
+		std::vector<int> wallPoints{ 22,33,19,74 };
+		std::vector<int> lengths{ 2,3,5,6 };
+
+		int accumulator = 0;
+		for (int i = 0; i < wallPoints.size(); ++i)
+			accumulator = std::max(accumulator, wallPoints[i] - lengths[i] / 4);
+		auto result = std::max(0, accumulator - h);
+
+		//Implement your solution here
+
+	}
 }
 
 namespace STLRanges
@@ -555,6 +575,7 @@ int main()
 		Exercise13();
 		Exercise14();
 		Exercise15();
+		Exercise16();
 	}
 
 	{  //Misc stuff
