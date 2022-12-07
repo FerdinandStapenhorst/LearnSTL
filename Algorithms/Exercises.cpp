@@ -399,7 +399,7 @@ namespace ContainerAlgorithm {
 	{
 		ExerciseStart t{ "ContainerAlgorithm:Exercise 16" };
 
-		// Check out this programmking challenge: https://www.hackerrank.com/contests/hourrank-31/challenges/hanging-posters/problem
+		// Check out this programming challenge: https://www.hackerrank.com/contests/hourrank-31/challenges/hanging-posters/problem
 		// See the solution below and try to find at least one solution that uses STL algorithm(s)
 
 		int h = 6;
@@ -412,7 +412,21 @@ namespace ContainerAlgorithm {
 		auto result = std::max(0, accumulator - h);
 
 		//Implement your solution here
+	}
+	
 
+	void Exercise17()
+	{
+		ExerciseStart t{ "ContainerAlgorithm:Exercise 17" };
+
+		//See sorted vector v below.
+		//Write a generic algorithm called adjacent_count that returns the number of adjacent elements being equal in a sorted sequence
+		//The result for our vector v here would be: 4  (2,2 - 5,5 - 7,7 - 24,24)
+		std::vector<int> v{ 0,1,2,2,3,4,5,5,6,7,7,24,24,33,46 };
+
+		//Implement your solution here.
+		//Example call would be:
+		//auto result = adjacent_count(std::begin(v), std::end(v));
 	}
 }
 
@@ -576,6 +590,7 @@ int main()
 		Exercise14();
 		Exercise15();
 		Exercise16();
+		Exercise17();
 	}
 
 	{  //Misc stuff
