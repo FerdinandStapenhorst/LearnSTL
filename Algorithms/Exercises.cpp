@@ -410,13 +410,14 @@ namespace ContainerAlgorithm {
 		vector lengths{ 2,3,5,6 };
 
 		int accumulator = 0;
-		for (int i = 0; i < wallPoints.size(); ++i)
+		for (int i = 0; i < wallPoints.size(); ++i) {
 			accumulator = max(accumulator, wallPoints[i] - lengths[i] / 4);
+		}
 		auto result = max(0, accumulator - h);
 
-		//Implement your solution here
+		//Implement your sSTL olution here
 	}
-	
+
 	void Exercise17()
 	{
 		my::PrintExerciseName t{ "ContainerAlgorithm:Exercise 17" };
@@ -425,10 +426,37 @@ namespace ContainerAlgorithm {
 		//Write a generic algorithm called adjacent_count that returns the number of adjacent elements being equal in a sorted sequence
 		//The result for our vector v here would be: 4  (2,2 - 5,5 - 7,7 - 24,24)
 		vector v{ 0,1,2,2,3,4,5,5,6,7,7,24,24,33,46 };
-		
+
 		//Implement your solution here.
 		//Example call would be:
 		//auto result = adjacent_count(begin(v), end(v));
+	}
+
+	int FindValue(std::vector<int> const& v, int value)
+	{
+		
+
+		return -1;
+	}
+
+	void Exercise18()
+	{
+		my::PrintExerciseName t{ "ContainerAlgorithm:Exercise 18" };
+
+		// Imagine an integer sequence having distinct items sorted in ascending order.No duplicate exists in the sequence.
+		// Now, the sequence is rotated at some pivot index unknown to you beforehand.
+		// Example: [1,2,3,4,5,6,7,8,9] might become [4,5,6,7,8,9,1,2,3] (here the pivot index is 3)
+		//
+		// Implement the function FindValue that given a number n, returns the index where the value was found in the sequencey, 
+		// otherwise returns -1.
+		// Important:
+		// Your functions's runtime complexity must be in the order of O(log n).
+
+		vector v{ 1,2,3,4,5,6,7,8,9 };
+		rotate(begin(v), begin(v) + 3, end(v));
+
+		//Implement the function FindValue as described
+		int result = FindValue(v, 7);
 	}
 }
 
@@ -593,6 +621,7 @@ int main()
 		Exercise15();
 		Exercise16();
 		Exercise17();
+		Exercise18();
 	}
 
 	{  //Misc stuff
