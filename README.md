@@ -1,6 +1,6 @@
 # LearnSTL
 This repo contains a C++ console application with a few exercises.
-You can use them to check your knowledge about the Standard Template Library's [go](http://stackoverflow.com){:target="_blank" rel="noopener"} <a href="https://en.cppreference.com/w/cpp/algorithm" target="_blank">algorithms</a> and other C++20 features like [Ranges](https://en.cppreference.com/w/cpp/ranges) and [Concepts](https://en.cppreference.com/w/cpp/concepts).
+You can use them to check your knowledge about the Standard Template Library's <a href="https://en.cppreference.com/w/cpp/algorithm" target="_blank">algorithms</a> and other C++20 features like [Ranges](https://en.cppreference.com/w/cpp/ranges) and [Concepts](https://en.cppreference.com/w/cpp/concepts).
 The exercises are mainly about using algorithms on STL containers - mostly vector.
 If you would like to get the (possible) solutions for each exercise, please contact me at github@stapenhorst.io
 
